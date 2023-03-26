@@ -1,4 +1,4 @@
-
+import fs from "fs";
 
 export const baseUrl = `https://www.topachat.com/api/configomatic/get.list.product.php`;
 
@@ -33,8 +33,9 @@ export const getComponentInfos = async ( ) => {
             console.log(`Fetching ${url} ...`);
 
             const response = await fetch(url);
-            const {result} = await response.json();
-            const {content} = result;
+            const data = await response.json();
+            fs.writeFileSync(`./src/mocks/${componentName}_info.json`, JSON.stringify(data));
+            const {content} = data.result;
             return content;
     }); 
 
