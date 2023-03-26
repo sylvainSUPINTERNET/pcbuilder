@@ -4,19 +4,19 @@ export const baseUrl = `https://www.topachat.com/api/configomatic/get.list.produ
 
 export const topachatUrls = [
     "GFX", // gpu 
-    // "PRO", // cpu
-    // "VEN", // ventirad
-    // "CME", // motherboard
-    // "PAT", // pate thermique
-    // "MEM", // ram
-    // "SM20", // M2
-    // "DRV2", // SSD1 
-    // "DRV0", // HDD
-    // "BOX", // boitier
-    // "ALM", // alimentation
-    // "MON0", // monitor
-    // "MOU", // mouse
-    // "KEY", // keyboard
+    "PRO", // cpu
+    "VEN", // ventirad
+    "CME", // motherboard
+    "PAT", // pate thermique
+    "MEM", // ram
+    "SM20", // M2
+    "DRV2", // SSD1 
+    "DRV0", // HDD
+    "BOX", // boitier
+    "ALM", // alimentation
+    "MON0", // monitor
+    "MOU", // mouse
+    "KEY", // keyboard
 ]
 
 const generateTopcAchatApiUrl = async ( componentName: string ) => {
