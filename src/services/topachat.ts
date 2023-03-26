@@ -34,7 +34,7 @@ export const getComponentInfos = async ( ) => {
 
             const response = await fetch(url);
             const data = await response.json();
-            fs.writeFileSync(`./src/mocks/${componentName}_info.json`, JSON.stringify(data));
+            fs.writeFileSync(`./src/dataset/topachat/${componentName}_info.json`, JSON.stringify(data));
             const {content} = data.result;
             return content;
     }); 
