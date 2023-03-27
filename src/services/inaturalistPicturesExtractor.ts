@@ -78,7 +78,7 @@ export const generateDataset = async (results:any) => {
 }
 
 
-export const generateDatasetINaturalist = async () => {
+export const generateDatasetINaturalist = async () => { 
     try {
         console.log("Extracting dataset from INaturalist ...")
 
