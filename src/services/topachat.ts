@@ -114,5 +114,18 @@ export const extractHashAndDownloadPictures = async (lastHash:string="") => {
  * Associate JSON file to media file donwloaded
  */
 export const associateJsonToMedia = async () => {
-    
+
+    let hashes:Set<string> = new Set();
+
+    for (const componentName of topachatUrls) {
+        const data = fs.readFileSync(`./src/dataset/topachat/${componentName}_info.json`, 'utf8');
+        const {content} = JSON.parse(data).result;
+
+        for ( const [idx, key] of Object.keys(content).entries() )  {   
+            hashes.add(content[key].media.main.hash_id);
+        };
+    };
+
+    // TODO 
+
 }
