@@ -16,20 +16,14 @@ import { generateTorSocksAgent } from "./services/proxy";
     // Grab components info as JSON file 
     // await getComponentInfos();
 
-    
-/*     axios({
-      url: 'https://ifconfig.me',
-      httpsAgent: generateTorSocksAgent(),
-    })
-    .then(({
-      data
-    }) => {
-      console.log(data);
-    });
- */
+
+    // const lastHash = "619f5a632572885fae311820";
+    // await extractHashAndDownloadPictures(lastHash);
 
 
-    await extractHashAndDownloadPictures();
+    await associateJsonToMedia();
+
+
     
 })();
 

@@ -56,47 +56,63 @@ export const getComponentInfos = async ( ) => {
  * Extract hash from JSON
  * Download picture from hash using proxy TOR
  */
-export const extractHashAndDownloadPictures = () => {
+
+// TODO : refactor into recursive function to check if last hash is found, if yes unlock the download of the next pictures
+
+export const extractHashAndDownloadPictures = async (lastHash:string="") => {
+
+    const waterMark = 400;
+    const delay = 5000;
 
     let hashs: Array<string> = [];
 
-    topachatUrls.map( async ( componentName: string, index:number ) => {
+    for (const componentName of topachatUrls) {
         
         const data = fs.readFileSync(`./src/dataset/topachat/${componentName}_info.json`, 'utf8');
         const {content} = JSON.parse(data).result;
 
-        Object.keys(content).map( async (key:string, idx:number) => {
+
+        for ( const [idx, key] of Object.keys(content).entries() )  {
 
             // e.g https://media.topachat.com/media/s200/<hash_id>.webp
-
-            if ( content[key].media.main.hash_id ) {
-                hashs.push(content[key].media.main.hash_id);
-
-                if ( idx === 1 ) {
-
-                    try {
-                        const response = await axios({
-                            url: `https://media.topachat.com/media/s200/${content[key].media.main.hash_id}.webp`,
-                            httpsAgent: generateTorSocksAgent(),
-                            responseType: 'stream'
-                        });
-
-                        const stream = response.data;
-                        // Pipe the stream to a file
-                        const file = fs.createWriteStream(`./src/dataset/topachat/medias/${content[key].media.main.hash_id}_${key}.webp`);
-                        stream.pipe(file);
-
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    
-                }
+            
+            if ( idx % waterMark == 0 && idx !== 0 ) {
+                await new Promise((resolve) => setTimeout(resolve, delay + idx * 1000));
             }
 
-        });
+            if ( content[key].media.main.hash_id && content[key].media.main.hash_id !== lastHash) {
+                hashs.push(content[key].media.main.hash_id);
 
-    });
+                console.log(`Downloading ${content[key].media.main.hash_id} ...`);
+                try {
+                    const response = await axios({
+                        url: `https://media.topachat.com/media/s400/${content[key].media.main.hash_id}.webp`,
+                        httpsAgent: generateTorSocksAgent(),
+                        responseType: 'stream'
+                    });
+
+                    const stream = response.data;
+                    // Pipe the stream to a file
+                    const file = fs.createWriteStream(`./src/dataset/topachat/medias/${content[key].media.main.hash_id}_${key}.webp`);
+                    stream.pipe(file);
+
+                } catch (e) {
+                    console.log(e);
+                }
+
+            }
+
+        };
+
+    };
 
 
     console.log("Medias to download : ", hashs.length);
+}
+
+/**
+ * Associate JSON file to media file donwloaded
+ */
+export const associateJsonToMedia = async () => {
+    
 }
