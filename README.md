@@ -1,13 +1,27 @@
+npx supabase init
+
+npx supabase login
+
+npx supabase projects list / create
 
 
-npx prisma init
+Copy id and ( require DB password )
+
+npx supabase link --project-ref <ID> --dns-resolver https
 
 
-Generate Prisma client and migration: Run the following command to generate the Prisma client and a database migration:
-bash : 
-
-npx prisma generate
-npx prisma migrate dev --name init
+npx supabase migration new <my_migration>
 
 
-E:\Tor Browser\Browser\TorBrowser\Tor
+npx supabase dumb / push / commit
+
+npx supabase db push
+
+
+https://supabase.com/docs/guides/database/api/generating-types
+
+npx supabase gen types typescript --project-id "PROJECT_ID" --schema public > src/supabase.ts
+
+E:\Tor Browser\Browser\TorBrowser\Tor && .\tor.exe
+
+

@@ -3,27 +3,37 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { generateDatasetINaturalist } from "./services/inaturalistPicturesExtractor";
-import { extractHashAndDownloadPictures, getComponentInfos } from "./services/topachat";
+import { associateJsonToMediaAndSaveToDb, extractHashAndDownloadPictures, getComponentInfos } from "./services/topachat";
 import axios from "axios";
 import { generateTorSocksAgent } from "./services/proxy";
+import { createClient } from "@supabase/supabase-js";
+import { constants } from "./constants/constants";
+import { Database } from "./supabase";
+
+
+export const supabaseClient = createClient<Database>(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!);
 
 ( async () => {
 
-    // AI model => collab 37 ( model trained / testable on roboflow )
-    // await generateDatasetINaturalist();
+    try {
 
+    // Make sure to start your local TOR node before running this script
 
-    // Grab components info as JSON file 
+    /* Getting json from components API */
     // await getComponentInfos();
 
-
-    // const lastHash = "619f5a632572885fae311820";
+    /* Getting media associated to json */
+    // const lastHash = "";
     // await extractHashAndDownloadPictures(lastHash);
 
 
-    await associateJsonToMedia();
+    /* Associate json to media and insert into supabase */
+    const result = await associateJsonToMediaAndSaveToDb();
+    console.log(result)
 
-
+    } catch ( e ) {
+        console.log(e);
+    }
     
 })();
 
