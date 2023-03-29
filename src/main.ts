@@ -2,12 +2,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { generateDatasetINaturalist } from "./services/inaturalistPicturesExtractor";
 import { associateJsonToMediaAndSaveToDb, extractHashAndDownloadPictures, getComponentInfos } from "./services/topachat";
-import axios from "axios";
-import { generateTorSocksAgent } from "./services/proxy";
 import { createClient } from "@supabase/supabase-js";
-import { constants } from "./constants/constants";
 import { Database } from "./supabase";
 
 
