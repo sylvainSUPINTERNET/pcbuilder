@@ -25,8 +25,7 @@ export const supabaseClient = createClient<Database>(process.env.SUPABASE_URL!, 
 
     /* Associate json to media and insert into supabase */
     const result = await associateJsonToMediaAndSaveToDb();
-    console.log(result)
-
+        console.log(result)
     } catch ( e ) {
         console.log(e);
     }

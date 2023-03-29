@@ -23,6 +23,43 @@ export const topachatUrls = [
     "KEY", // keyboard
 ]
 
+
+const getCategory = ( componentName: string ): string | null => {
+    switch ( componentName ) {
+        case "GFX":
+            return "GPU";
+        case "PRO":
+            return "CPU";
+        case "VEN":
+            return "VENTIRAD";
+        case "CME":
+            return "MOTHERBOARD";
+        case "PAT":
+            return "TERMAL_PASTE";
+        case "MEM":
+            return "RAM";
+        case "SM20":
+            return "M2";
+        case "DRV2":
+            return "SSD1";
+        case "DRV0":
+            return "HDD";
+        case "BOX":
+            return "BOX";
+        case "ALM":
+            return "POWER_SUPPLY";
+        case "MON0":
+            return "MONITOR";
+        case "MOU":
+            return "MOUSE";
+        case "KEY":
+            return "KEYBOARD";
+        default:
+            console.log(`${componentName} has not corresponding category`)
+            return null;
+    }
+}
+
 const generateTopcAchatApiUrl = async ( componentName: string ) => {
     return `${baseUrl}?type=${componentName}&ref_by_selected_type=%7B%7D`
 }
@@ -165,6 +202,7 @@ export const associateJsonToMediaAndSaveToDb = async () => {
                     "price_market": content[key].price_market,
                     "sublabel": content[key].sublabel,
                     "media_path": `./src/dataset/topachat/medias/${content[key].media.main.hash_id}_${key}.webp`,
+                    "category": getCategory(componentName)
                 }]
             };
             };
@@ -175,7 +213,7 @@ export const associateJsonToMediaAndSaveToDb = async () => {
         try {
             const data = await supabaseClient
             .from('components')
-            .upsert(toInsert, { onConflict: 'constructor_brand,label', ignoreDuplicates: true })
+            .upsert(toInsert);
 
             console.log("Insertion done : ", toInsert.length);
             return data;
