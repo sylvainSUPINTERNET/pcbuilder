@@ -188,6 +188,7 @@ export const associateJsonToMediaAndSaveToDb = async () => {
     
     const imageFilesSet:Set<string> = new Set([...imageFiles]);
     
+    const history:Set<String> = new Set();
 
     for (const componentName of topachatUrls) {
         const data = fs.readFileSync(`./src/dataset/topachat/${componentName}_info.json`, 'utf8');
@@ -196,13 +197,23 @@ export const associateJsonToMediaAndSaveToDb = async () => {
         for ( const [idx, key] of Object.keys(content).entries() )  {   
 
             if ( imageFilesSet.has(`${content[key].media.main.hash_id}_${key}.webp`) ) {
+                
+                if ( history && history.has(`${content[key].media.main.hash_id}`) ) {
+                    console.log(`Duplicate found : ${content[key].media.main.hash_id}_${key}.webp`)
+                    continue;
+                }
+
+                history.add(`${content[key].media.main.hash_id}`);
+
+                
                 toInsert = [...toInsert, {
                     "constructor_brand": content[key].brand,
                     "label": content[key].label,
                     "price_market": content[key].price_market,
                     "sublabel": content[key].sublabel,
                     "media_path": `./src/dataset/topachat/medias/${content[key].media.main.hash_id}_${key}.webp`,
-                    "category": getCategory(componentName)
+                    "category": getCategory(componentName),
+                    "hash": content[key].media.main.hash_id,
                 }]
             };
             };
@@ -213,7 +224,7 @@ export const associateJsonToMediaAndSaveToDb = async () => {
         try {
             const data = await supabaseClient
             .from('components')
-            .upsert(toInsert);
+            .upsert(toInsert, { onConflict: 'hash' });
 
             console.log("Insertion done : ", toInsert.length);
             return data;
