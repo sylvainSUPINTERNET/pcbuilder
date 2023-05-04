@@ -7,7 +7,7 @@ npx supabase projects list / create
 
 Copy id and ( require DB password )
 
-npx supabase link --project-ref <ID> --dns-resolver https
+npx supabase link --project-ref < YOUR_ID > --dns-resolver https
 
 
 npx supabase migration new <my_migration>
